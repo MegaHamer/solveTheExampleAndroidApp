@@ -6,6 +6,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import java.io.Serializable
 import java.math.RoundingMode
 import java.text.DecimalFormat
 import kotlin.math.roundToInt
@@ -22,6 +23,25 @@ class MainActivity : AppCompatActivity() {
         binding.buttonStart.isEnabled = true
         binding.buttonCheck.setOnClickListener {check()}
         binding.buttonCheck.isEnabled = false
+
+        TotalSolvesExamples = savedInstanceState?.getInt("Total") ?: TotalSolvesExamples
+        RightSolvesExamples = savedInstanceState?.getInt("Right") ?: RightSolvesExamples
+        WrongSolvesExmples = TotalSolvesExamples-RightSolvesExamples
+
+        binding.inputUserAnswer.setText(savedInstanceState?.getString("user") ?: "")
+
+        var exe = savedInstanceState?.getSerializable("ex") ?: ex
+        ex = exe as Example
+
+        UpdateText()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putInt("Total",TotalSolvesExamples)
+        outState.putInt("Right",RightSolvesExamples)
+        outState.putSerializable("ex",ex)
+        outState.putString("user",binding.inputUserAnswer.getText().toString())
     }
     private var TotalSolvesExamples = 0
     private var RightSolvesExamples = 0
@@ -77,3 +97,5 @@ class MainActivity : AppCompatActivity() {
         }
     }
 }
+
+

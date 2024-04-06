@@ -1,8 +1,9 @@
 package aa.churkin.solvetheexample
 
+import java.io.Serializable
 import kotlin.random.Random
 
-class Example {
+public class Example : Serializable {
     class Example(){}
     public var firstNumber = 0
     public var secondNumber = 0
