@@ -1,6 +1,7 @@
 package aa.churkin.solvetheexample
 
 import aa.churkin.solvetheexample.databinding.ActivityMainBinding
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -28,6 +29,9 @@ class MainActivity : AppCompatActivity() {
         RightSolvesExamples = savedInstanceState?.getInt("Right") ?: RightSolvesExamples
         WrongSolvesExmples = TotalSolvesExamples-RightSolvesExamples
 
+        color =  savedInstanceState?.getInt("color")?:color
+        binding.main.background = getDrawable(color)
+
         binding.inputUserAnswer.setText(savedInstanceState?.getString("user") ?: "")
 
         var exe = savedInstanceState?.getSerializable("ex") ?: ex
@@ -35,6 +39,7 @@ class MainActivity : AppCompatActivity() {
 
         UpdateText()
     }
+    var color = R.color.white
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
@@ -42,6 +47,8 @@ class MainActivity : AppCompatActivity() {
         outState.putInt("Right",RightSolvesExamples)
         outState.putSerializable("ex",ex)
         outState.putString("user",binding.inputUserAnswer.getText().toString())
+
+        outState.putInt("color",color)
     }
     private var TotalSolvesExamples = 0
     private var RightSolvesExamples = 0
@@ -54,7 +61,8 @@ class MainActivity : AppCompatActivity() {
         //enable off startbutton
         binding.buttonStart.isEnabled = false
         //color bg white
-        binding.main.background = getDrawable(R.color.white)
+        color = R.color.white
+        binding.main.background = getDrawable(color)
 
         ex.generateNewExample()
         UpdateText()
@@ -71,13 +79,14 @@ class MainActivity : AppCompatActivity() {
         TotalSolvesExamples++
         //if correct
         if(ex.CheckAnswer(userAnswer.toInt())){
-            binding.main.background = getDrawable(R.color.RightAnswerColor)
+            color = R.color.RightAnswerColor
             RightSolvesExamples++
         }
         else{
-            binding.main.background = getDrawable(R.color.WrongAnswerColor)
+            color = R.color.WrongAnswerColor
             WrongSolvesExmples = TotalSolvesExamples-RightSolvesExamples
         }
+        binding.main.background = getDrawable(color)
         binding.inputUserAnswer.setText("")
 
         UpdateText()
