@@ -3,6 +3,7 @@ package aa.churkin.solvetheexample
 import aa.churkin.solvetheexample.databinding.ActivityMainBinding
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.widget.Chronometer
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -10,6 +11,7 @@ import androidx.core.view.WindowInsetsCompat
 import java.io.Serializable
 import java.math.RoundingMode
 import java.text.DecimalFormat
+import java.util.Timer
 import kotlin.math.roundToInt
 
 class MainActivity : AppCompatActivity() {
@@ -19,23 +21,25 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        //btns
         binding.buttonStart.setOnClickListener {start()}
-        binding.buttonStart.isEnabled = true
-        binding.buttonCheck.setOnClickListener {check()}
-        binding.buttonCheck.isEnabled = false
-
+        binding.buttonLeft.setOnClickListener {check(false)}
+        binding.buttonRight.setOnClickListener {check(true)}
+        //btns actives
+        binding.buttonLeft.isEnabled = false
+        binding.buttonRight.isEnabled = false
+        //text
         TotalSolvesExamples = savedInstanceState?.getInt("Total") ?: TotalSolvesExamples
         RightSolvesExamples = savedInstanceState?.getInt("Right") ?: RightSolvesExamples
         WrongSolvesExmples = TotalSolvesExamples-RightSolvesExamples
-
+        //background
         color =  savedInstanceState?.getInt("color")?:color
         binding.main.background = getDrawable(color)
-
-        binding.inputUserAnswer.setText(savedInstanceState?.getString("user") ?: "")
-
+        //example
         var exe = savedInstanceState?.getSerializable("ex") ?: ex
         ex = exe as Example
+        //time
+
 
         UpdateText()
     }
@@ -46,39 +50,43 @@ class MainActivity : AppCompatActivity() {
         outState.putInt("Total",TotalSolvesExamples)
         outState.putInt("Right",RightSolvesExamples)
         outState.putSerializable("ex",ex)
-        outState.putString("user",binding.inputUserAnswer.getText().toString())
 
         outState.putInt("color",color)
+
+        //time
+        outState.putInt("min",minimum)
+        outState.putInt("max",maximum)
     }
     private var TotalSolvesExamples = 0
     private var RightSolvesExamples = 0
     private var WrongSolvesExmples = 0
     private var ex = Example()
-
+    private var minimum = 0
+    private var maximum = 0
+    private var average = 0.00
     private fun start(){
-        //enable on checkbutton
-        binding.buttonCheck.isEnabled = true
-        //enable off startbutton
+        //btns active
+        binding.buttonLeft.isEnabled = true
+        binding.buttonRight.isEnabled = true
         binding.buttonStart.isEnabled = false
         //color bg white
         color = R.color.white
         binding.main.background = getDrawable(color)
+        //start timer
+
 
         ex.generateNewExample()
         UpdateText()
     }
-    private fun check(){
-        //enable on startbutton
+    private fun check(userAnswer:Boolean){
+        //btns active
+        binding.buttonLeft.isEnabled = false
+        binding.buttonRight.isEnabled = false
         binding.buttonStart.isEnabled = true
-        //enable off checkbutton
-        binding.buttonCheck.isEnabled = false
-        //get user answer and compare with solve
-        var userAnswer = binding.inputUserAnswer.getText().toString()
-        if (userAnswer=="") userAnswer ="0";
         //totalSolves
         TotalSolvesExamples++
         //if correct
-        if(ex.CheckAnswer(userAnswer.toInt())){
+        if(ex.CheckAnswer(userAnswer)){
             color = R.color.RightAnswerColor
             RightSolvesExamples++
         }
@@ -87,7 +95,12 @@ class MainActivity : AppCompatActivity() {
             WrongSolvesExmples = TotalSolvesExamples-RightSolvesExamples
         }
         binding.main.background = getDrawable(color)
-        binding.inputUserAnswer.setText("")
+
+        //end timer
+
+        //min max
+
+        //average
 
         UpdateText()
     }
@@ -104,6 +117,13 @@ class MainActivity : AppCompatActivity() {
             val roundoff = df.format(RightSolvesExamples/1.0/TotalSolvesExamples*100.0)
             binding.textPercent.text = "${roundoff}%"
         }
+        val df = DecimalFormat("#.##")
+        val roundoff = df.format(ex.answer)
+        binding.textThirdNumber.text = "${roundoff}"
+
+        //binding.textCountMinimum.text =
+        //binding.textMaximum.text=
+        //binding.textCountAverage =
     }
 }
 

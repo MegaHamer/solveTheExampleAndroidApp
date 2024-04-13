@@ -8,30 +8,29 @@ public class Example : Serializable {
     public var firstNumber = 0
     public var secondNumber = 0
     public var operator = "+"
+    public var answer = 0.0
 
     public fun generateNewExample(){
         var listOper = listOf("+","-","/","*")
         operator = listOper[Random.nextInt(0,listOper.size)]
         firstNumber = Random.nextInt(10,99)
         secondNumber = Random.nextInt(10,99)
-        if (operator == "/")
-            while ((firstNumber % secondNumber != 0) ||
-                (firstNumber == secondNumber) ||
-                (firstNumber == 0) ||
-                (secondNumber == 0)
-            ){
-            firstNumber = Random.nextInt(10,99)
-            secondNumber = Random.nextInt(10,99)
+        answer = when (operator){
+            "+"->{(firstNumber+secondNumber).toDouble()}
+            "-"->{(firstNumber-secondNumber).toDouble()}
+            "/"->{(firstNumber*1.0/secondNumber).toDouble()}
+            "*"->{(firstNumber*secondNumber).toDouble()}
+            else->0.0
         }
     }
-    public fun CheckAnswer(userAnswer:Int):Boolean{
+    public fun CheckAnswer(userAnswer:Boolean):Boolean{
         var rightAnswer = when (operator){
-            "+"->{firstNumber+secondNumber}
-            "-"->{firstNumber-secondNumber}
-            "/"->{firstNumber/secondNumber}
-            "*"->{firstNumber*secondNumber}
-            else->0
+            "+"->{(firstNumber+secondNumber).toDouble()}
+            "-"->{(firstNumber-secondNumber).toDouble()}
+            "/"->{(firstNumber * 1.0/secondNumber).toDouble()}
+            "*"->{(firstNumber*secondNumber).toDouble()}
+            else->0.0
         }
-        return (rightAnswer == userAnswer)
+        return ((rightAnswer == answer) == userAnswer )
     }
 }
