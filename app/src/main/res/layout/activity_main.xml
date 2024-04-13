@@ -8,11 +8,99 @@
     android:background="#FFFFFF"
     tools:context=".MainActivity">
 
+    <LinearLayout
+        android:id="@+id/linearLayout3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/textMinimum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Правильно"
+                android:textSize="17sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textCountMinimum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textSize="17sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textMinimum" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/textMaximum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Правильно"
+                android:textSize="17sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textCountMaximum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textSize="17sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textMaximum" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/textAverage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Не правильно"
+                android:textSize="17sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textCountAverage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textSize="17sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textAverage" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+
     <TextView
         android:id="@+id/textTotalSolvesExamples"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Итого решено примеров"
+        android:text="Итого проверено примеров"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -44,6 +132,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="3"
             android:text="00"
+            android:gravity="center"
             android:textSize="30sp" />
 
         <TextView
@@ -52,6 +141,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="3"
             android:text="+"
+            android:gravity="center"
             android:textSize="30sp" />
 
         <TextView
@@ -60,6 +150,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="3"
             android:text="00"
+            android:gravity="center"
             android:textSize="30sp" />
 
         <TextView
@@ -68,19 +159,16 @@
             android:layout_height="wrap_content"
             android:layout_weight="3"
             android:text="="
+            android:gravity="center"
             android:textSize="30sp" />
 
-        <EditText
-            android:id="@+id/inputUserAnswer"
-            android:layout_width="128dp"
+        <TextView
+            android:id="@+id/textThirdNumber"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:allowUndo="false"
-            android:ems="10"
+            android:layout_weight="3"
+            android:text="00"
             android:gravity="center"
-            android:hint="00"
-            android:inputType="number|numberSigned"
-            android:numeric="signed|integer"
             android:textSize="30sp" />
     </LinearLayout>
 
@@ -154,16 +242,7 @@
         android:textSize="40sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
-
-    <Button
-        android:id="@+id/buttonCheck"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="проверка"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
 
     <Button
         android:id="@+id/buttonStart"
@@ -172,5 +251,40 @@
         android:text="старт"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonCheck" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout4" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ВРЕМЯ (сек)"
+        android:textSize="25sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout4"
+        android:layout_width="409dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
+
+        <Button
+            android:id="@+id/buttonRight"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="ВЕРНО" />
+
+        <Button
+            android:id="@+id/buttonLeft"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="НЕВЕРНО" />
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
