@@ -48,6 +48,14 @@ class MainActivity : AppCompatActivity() {
         serviceIntent = Intent(applicationContext,StopWatch::class.java)
         registerReceiver(updateTime, IntentFilter(StopWatch.TIMER_UPDATED))
 
+        minimum = savedInstanceState?.getInt("min") ?:minimum
+        maximum = savedInstanceState?.getInt("max") ?:maximum
+        average = savedInstanceState?.getDouble("avg") ?:average
+
+        time = savedInstanceState?.getDouble("time") ?:time
+        timeStarted = savedInstanceState?.getBoolean("tStarted") ?:timeStarted
+        btnsActive()
+
         UpdateText()
     }
 
@@ -82,6 +90,9 @@ class MainActivity : AppCompatActivity() {
         //time
         outState.putInt("min",minimum)
         outState.putInt("max",maximum)
+        outState.putDouble("avg",average)
+        outState.putDouble("time",time)
+        outState.putBoolean("tStarted",timeStarted)
     }
     private var TotalSolvesExamples = 0
     private var RightSolvesExamples = 0
@@ -90,11 +101,16 @@ class MainActivity : AppCompatActivity() {
     private var minimum = 0
     private var maximum = 0
     private var average = 0.00
+    private fun btnsActive(){
+        binding.buttonLeft.isEnabled = timeStarted
+        binding.buttonRight.isEnabled = timeStarted
+        binding.buttonStart.isEnabled = !timeStarted
+
+    }
     private fun start(){
         //btns active
-        binding.buttonLeft.isEnabled = true
-        binding.buttonRight.isEnabled = true
-        binding.buttonStart.isEnabled = false
+        timeStarted = true
+        btnsActive()
         //color bg white
         color = R.color.white
         binding.main.background = getDrawable(color)
@@ -107,9 +123,8 @@ class MainActivity : AppCompatActivity() {
     }
     private fun check(userAnswer:Boolean){
         //btns active
-        binding.buttonLeft.isEnabled = false
-        binding.buttonRight.isEnabled = false
-        binding.buttonStart.isEnabled = true
+        timeStarted = false
+        btnsActive()
         //totalSolves
         TotalSolvesExamples++
         //if correct
@@ -154,6 +169,8 @@ class MainActivity : AppCompatActivity() {
         binding.textCountMaximum.text= maximum.toString()
         roundoff = df.format(average)
         binding.textCountAverage.text = "${roundoff}"
+        binding.textTimer.text = "ВРЕМЯ (${time})";
+
     }
 }
 

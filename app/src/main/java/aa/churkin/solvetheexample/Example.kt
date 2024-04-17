@@ -15,7 +15,8 @@ public class Example : Serializable {
         operator = listOper[Random.nextInt(0,listOper.size)]
         firstNumber = Random.nextInt(10,99)
         secondNumber = Random.nextInt(10,99)
-        answer = when (operator){
+        var answer_operator = if (Random.nextInt(0,1)==1) operator else listOper[Random.nextInt(0,listOper.size)]
+        answer = when (answer_operator){
             "+"->{(firstNumber+secondNumber).toDouble()}
             "-"->{(firstNumber-secondNumber).toDouble()}
             "/"->{(firstNumber*1.0/secondNumber).toDouble()}
