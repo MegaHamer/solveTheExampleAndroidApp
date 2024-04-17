@@ -1,6 +1,10 @@
 package aa.churkin.solvetheexample
 
 import aa.churkin.solvetheexample.databinding.ActivityMainBinding
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.widget.Chronometer
@@ -16,7 +20,9 @@ import kotlin.math.roundToInt
 
 class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
-
+    private var timeStarted = false
+    private lateinit var serviceIntent: Intent
+    private var time = 0.0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -39,10 +45,30 @@ class MainActivity : AppCompatActivity() {
         var exe = savedInstanceState?.getSerializable("ex") ?: ex
         ex = exe as Example
         //time
-
+        serviceIntent = Intent(applicationContext,StopWatch::class.java)
+        registerReceiver(updateTime, IntentFilter(StopWatch.TIMER_UPDATED))
 
         UpdateText()
     }
+
+    private val updateTime:BroadcastReceiver = object : BroadcastReceiver(){
+        override fun onReceive(context: Context, intent: Intent) {
+            time = intent.getDoubleExtra(StopWatch.TIME_EXTRA,0.0)
+            binding.textTimer.text = "ВРЕМЯ (${time})";
+        }
+    }
+
+    private fun startTimer() {
+        serviceIntent.putExtra(StopWatch.TIME_EXTRA,time)
+        startService(serviceIntent)
+
+    }
+
+    private fun stopTimer() {
+        stopService(serviceIntent)
+    }
+
+
     var color = R.color.white
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -73,7 +99,8 @@ class MainActivity : AppCompatActivity() {
         color = R.color.white
         binding.main.background = getDrawable(color)
         //start timer
-
+        time = 0.0
+        startTimer()
 
         ex.generateNewExample()
         UpdateText()
@@ -97,10 +124,12 @@ class MainActivity : AppCompatActivity() {
         binding.main.background = getDrawable(color)
 
         //end timer
-
+        stopTimer()
         //min max
-
+        minimum = if (minimum > time || minimum == 0) time.toInt() else minimum
+        maximum = if (maximum < time) time.toInt() else maximum
         //average
+        average = (average * (TotalSolvesExamples-1) + time) / TotalSolvesExamples
 
         UpdateText()
     }
@@ -118,12 +147,13 @@ class MainActivity : AppCompatActivity() {
             binding.textPercent.text = "${roundoff}%"
         }
         val df = DecimalFormat("#.##")
-        val roundoff = df.format(ex.answer)
+        var roundoff = df.format(ex.answer)
         binding.textThirdNumber.text = "${roundoff}"
 
-        //binding.textCountMinimum.text =
-        //binding.textMaximum.text=
-        //binding.textCountAverage =
+        binding.textCountMinimum.text = minimum.toString()
+        binding.textCountMaximum.text= maximum.toString()
+        roundoff = df.format(average)
+        binding.textCountAverage.text = "${roundoff}"
     }
 }
 
